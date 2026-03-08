@@ -1,0 +1,1 @@
+"""Skill: fetch trending topics."""
