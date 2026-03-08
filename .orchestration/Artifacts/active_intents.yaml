@@ -1,0 +1,35 @@
+active_intents:
+  - id: "INT-001"
+    name: "Chimera Skill Pipeline"
+    status: "IN_PROGRESS"
+    owned_scope:
+      - "skills/skill_fetch_trends/**"
+      - "skills/skill_generate_caption/**"
+      - "skills/skill_publish_post/**"
+      - "tests/test_trend_fetcher.py"
+      - "tests/test_skills_interface.py"
+    constraints:
+      - "Must follow AS-001 to AS-003 in specs/functional.md"
+      - "Must use MCP-only integrations (no direct external API calls)"
+      - "Must validate IO contracts with Pydantic"
+    acceptance_criteria:
+      - "Fetch trends and output structured JSON with trend score, volume, and relevance"
+      - "Generate persona-aligned caption content"
+      - "Publish post through skill interface with passing tests"
+
+  - id: "INT-002"
+    name: "Financial Autonomy Guardrails"
+    status: "IN_PROGRESS"
+    owned_scope:
+      - "specs/functional.md"
+      - "specs/technical.md"
+      - "specs/openclaw_integration.md"
+      - "tests/**"
+    constraints:
+      - "Must follow AS-004 in specs/functional.md"
+      - "Must enforce daily spend limits and anomaly checks"
+      - "Must require HITL escalation for high-risk transactions"
+    acceptance_criteria:
+      - "CFO judge logic approves or rejects transactions"
+      - "Transactions above threshold are escalated to HITL"
+      - "Audit trail records financial decisions and status"
