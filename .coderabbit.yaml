@@ -1,0 +1,45 @@
+# CodeRabbit AI Review Configuration
+#
+# NOTE:
+# - CodeRabbit configuration is typically discovered at the repository root as `.coderabbit.yaml`.
+# - The `check: |` blocks below contain pseudo-code that references a `pr` object; whether
+#   this is executed depends on CodeRabbit's supported schema. If CodeRabbit ignores these
+#   fields, convert them into "instructions"/"guidelines" in the format CodeRabbit supports.
+review:
+    enabled: true
+    
+    rules:
+      - name: spec-alignment
+        description: "Check if code aligns with specifications"
+        check: |
+          # Check for spec references in PR description
+          if not pr.description.includes("AS-") and not pr.description.includes("API-"):
+            warn("Consider referencing spec IDs (e.g., AS-001) in PR description")
+          
+          # Check if new files have corresponding tests
+          for file in pr.files.added:
+            if file.path.endswith(".py") and not file.path.startswith("tests/"):
+              test_file = "tests/test_" + file.path.replace("/", "_").replace(".py", ".py")
+              if not test_file in pr.files:
+                warn(f"Consider adding tests for {file.path}")
+      
+      - name: mcp-compliance
+        description: "Ensure MCP patterns are followed"
+        check: |
+          for file in pr.files.added:
+            content = file.content
+            # Check for direct API calls (should use MCP)
+            if "requests.get(" in content or "requests.post(" in content:
+              warn(f"Direct API call in {file.path}. Consider using MCP server instead")
+            
+            # Check for hardcoded credentials
+            if "api_key" in content.lower() or "password" in content.lower():
+              error(f"Potential hardcoded credentials in {file.path}")
+      
+      - name: architecture-compliance
+        description: "Check Planner-Worker-Judge separation"
+        check: |
+          for file in pr.files.modified:
+            if "planner" in file.path and "worker" in file.content:
+              warn(f"Mixing Planner and Worker concerns in {file.path}")
+

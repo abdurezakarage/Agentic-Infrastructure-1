@@ -1,0 +1,24 @@
+---
+alwaysApply: true
+---
+## Project Context
+This is Project Chimera: an autonomous influencer swarm system using Planner-Worker-Judge architecture. All external integrations must use MCP. Agents have economic autonomy via Coinbase AgentKit.
+
+## Prime Directives
+1. **SPECS FIRST**: Never write implementation without checking `specs/`. Always reference spec IDs (e.g., AS-001, API-003).
+2. **MCP ONLY**: No direct API calls. All external access via MCP servers.
+3. **TDD MANDATORY**: Write failing tests before implementation.
+4. **AGENTIC DESIGN**: Design for AI agents first, humans second.
+
+## Development Workflow
+1. Read relevant spec files
+2. Write failing tests
+3. Implement minimal working code
+4. Verify with tests
+5. Commit with spec references
+
+## Architecture Guardrails
+- Use Pydantic for all data validation
+- Redis for queues, PostgreSQL for persistence, Weaviate for memory
+- Planner-Worker-Judge separation is sacred
+- Optimistic Concurrency Control for state management
